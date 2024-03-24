@@ -6,6 +6,7 @@ The lands are square and have equal value. Neighboring lands can be exchanged. T
 The problem can be described as follows: an instance is an NxM matrix of houses with K colors. The matrix represents the map, and the colors represent the owners, also identified by letters or numbers. Two houses of distinct colors sharing a side create a border. The goal is to reduce the number of borders. An action is a land swap, which consists of exchanging the colors of two continuous houses. This action is only valid if the number of borders does not increase as a result of the swap, and there is no other action with a greater reduction of the number of borders. A sequence of actions is sought that leads to a number of borders equal to or lower than a value W.
 
 Example instance of a 3x3 houses of 3 colors. A solution with 6 or fewer borders is sought:
+
 <img width="93" alt="image" src="https://github.com/jjginga/LandPermutationProblem/assets/60369139/928c6866-b041-4414-8a00-7fb5e95d1a0b">
 
 
@@ -28,7 +29,9 @@ ID | N | M | K | W1 | W2
 
 Each instance has two versions, version 1 (W1) and version 2 (W2). [Challenge: for students who have an operational implementation, and after the report is done, they can try to solve the last 3 instances with W of 22, 21, and 56 respectively, considering this a third version]
 
+
 In addition to the parameters, the initial coloring of the houses is defined for each instance, each color identified with an integer, the letter A is associated with the number 1, and so on:
+
 <img width="445" alt="image" src="https://github.com/jjginga/LandPermutationProblem/assets/60369139/d82fe75e-f0d5-4cca-86be-9e1fd7474988">
 
 
