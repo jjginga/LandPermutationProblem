@@ -26,8 +26,8 @@ public class BFS extends AbstractSearchTechnique {
             maxDepth = Math.max(currentState.getDepth(), maxDepth);
 
             if(Thread.currentThread().isInterrupted()) {
-                System.out.println("BFS interrupted");
-                return captureCurrentState(currentState,generatedStates,maxDepth);
+                captureCurrentState(currentState,generatedStates,maxDepth);
+                latch.countDown();
             }
 
             //check if solution is found

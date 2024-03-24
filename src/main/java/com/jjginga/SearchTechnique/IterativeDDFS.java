@@ -49,7 +49,8 @@ public class IterativeDDFS extends AbstractSearchTechnique {
                     return new SearchResult(currentState, true, generatedStates,level);
 
                 if(Thread.currentThread().isInterrupted()) {
-                    return captureCurrentState(currentState,generatedStates,level);
+                    captureCurrentState(currentState,generatedStates,level);
+                    latch.countDown();
                 }
 
                 List<IState> successors = currentState.generateSucessors();

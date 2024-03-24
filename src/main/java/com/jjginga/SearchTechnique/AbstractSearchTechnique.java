@@ -4,6 +4,7 @@ import com.jjginga.Result.SearchResult;
 import com.jjginga.State.IState;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public abstract class AbstractSearchTechnique implements ISearchTechnique{
 
@@ -12,6 +13,7 @@ public abstract class AbstractSearchTechnique implements ISearchTechnique{
     private int objective;
 
     protected SearchResult notFoundResult;
+    protected final CountDownLatch latch = new CountDownLatch(1);
     public AbstractSearchTechnique() {
     }
 
@@ -43,6 +45,14 @@ public abstract class AbstractSearchTechnique implements ISearchTechnique{
     protected SearchResult captureCurrentState(IState state, int generatedStates, int depth) {
         this.notFoundResult = new SearchResult(state, false, generatedStates, depth);
         return this.notFoundResult;
+    }
+
+    public void awaitCompletion() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     protected List<IState> generateSuccessors(IState currentState) {

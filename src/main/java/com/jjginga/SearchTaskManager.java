@@ -34,6 +34,7 @@ public class SearchTaskManager {
             System.out.println(result);
         } catch (TimeoutException e) {
             future.cancel(true);
+            searchTechnique.awaitCompletion();
             SearchResult currentResult = searchTechnique.getNotFoundResult();
             System.err.println(searchTechnique);
             System.err.println(String.format("Search timed out: %s", currentResult));
