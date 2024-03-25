@@ -10,10 +10,6 @@ public class SearchResult {
 
     long executionTime;
 
-    public SearchResult() {
-        this.solutionFound = false;
-    }
-
     public SearchResult(IState state, boolean solutionFound, int generatedStates, int depth) {
         this.solutionFound = solutionFound;
         this.state = state;
@@ -21,26 +17,6 @@ public class SearchResult {
         this.depth = depth;
     }
 
-
-    public boolean isSolutionFound() {
-        return solutionFound;
-    }
-
-    public void setSolutionFound(boolean solutionFound) {
-        this.solutionFound = solutionFound;
-    }
-
-    public int getGeneratedStates() {
-        return generatedStates;
-    }
-
-    public void setGeneratedStates(int generatedStates) {
-        this.generatedStates = generatedStates;
-    }
-
-    public long getExecutionTime() {
-        return executionTime;
-    }
 
     public void setExecutionTime(long executionTime) {
         this.executionTime = executionTime;
@@ -54,18 +30,8 @@ public class SearchResult {
         this.state = state;
     }
 
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
     @Override
     public String toString() {
-        return "depth= " + depth +
-                ", generatedStates= " + generatedStates +
-                ", executionTime= " + executionTime;
+        return String.format("depth = %d, generatedStates = %d, executionTime = %.4f s", depth, generatedStates, (executionTime/1_000_000_000.0));
     }
 }

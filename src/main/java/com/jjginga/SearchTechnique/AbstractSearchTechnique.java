@@ -42,9 +42,8 @@ public abstract class AbstractSearchTechnique implements ISearchTechnique{
     }
 
 
-    protected SearchResult captureCurrentState(IState state, int generatedStates, int depth) {
+    protected void captureCurrentState(IState state, int generatedStates, int depth) {
         this.notFoundResult = new SearchResult(state, false, generatedStates, depth);
-        return this.notFoundResult;
     }
 
     public void awaitCompletion() {
@@ -64,31 +63,8 @@ public abstract class AbstractSearchTechnique implements ISearchTechnique{
         return executionTime;
     }
 
-    public void setExecutionTime(long executionTime) {
-        this.executionTime = executionTime;
-    }
-
-    public IState getInitialState() {
-        return initialState;
-    }
-
-    public void setInitialState(IState initialState) {
-        this.initialState = initialState;
-    }
-
-    public int getObjective() {
-        return objective;
-    }
-
-    public void setObjective(int objective) {
-        this.objective = objective;
-    }
-
     public SearchResult getNotFoundResult() {
         return notFoundResult;
     }
 
-    public void setNotFoundResult(SearchResult notFoundResult) {
-        this.notFoundResult = notFoundResult;
-    }
 }

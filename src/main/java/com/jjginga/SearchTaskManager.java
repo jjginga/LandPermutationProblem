@@ -7,8 +7,6 @@ import com.jjginga.SearchTechnique.DFS;
 import com.jjginga.SearchTechnique.IterativeDDFS;
 import com.jjginga.State.IState;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.*;
 
 public class SearchTaskManager {
@@ -37,7 +35,7 @@ public class SearchTaskManager {
             searchTechnique.awaitCompletion();
             SearchResult currentResult = searchTechnique.getNotFoundResult();
             System.err.println(searchTechnique);
-            System.err.println(String.format("Search timed out: %s", currentResult));
+            System.err.printf("Search timed out: %s%n", currentResult);
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

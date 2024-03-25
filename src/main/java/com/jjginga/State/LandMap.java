@@ -3,7 +3,7 @@ package com.jjginga.State;
 import java.util.*;
 
 public class LandMap implements IState {
-    private int[][] landMap;
+    private final int[][] landMap;
     private int borders;
     private int depth;
 
@@ -13,109 +13,94 @@ public class LandMap implements IState {
         depth = 0;
     }
 
+    public LandMap(int[][] landMap, int depth) {
+        this.landMap = landMap;
+        evaluate();
+        this.depth = depth;
+    }
+
     public void evaluate() {
+        this.borders = countBorders();
+    }
+
+    private int countBorders() {
         int borders = 0;
-
-        for (int[] row : landMap)
-            for (int col = 0; col < row.length - 1; col++)
-                if (row[col] != row[col + 1])
+        for(int row = 0; row < landMap.length; row++)
+            for (int col = 0; col < landMap[row].length; col++) {
+                if (col<landMap[row].length - 1 && landMap[row][col] != landMap[row][col + 1])
                     borders++;
-
-        for(int row = 0; row < landMap.length - 1; row++)
-            for (int col = 0; col < landMap[row].length; col++)
-                if (landMap[row][col] != landMap[row + 1][col])
+                if (row < landMap.length -1 && landMap[row][col] != landMap[row + 1][col])
                     borders++;
-
-        this.borders = borders;
+            }
+        return borders;
     }
 
     public int getObjectiveValue() {
         return borders;
     }
+
     public List<IState> generateSucessors() {
         List<IState> successors = new LinkedList<>();
-        Set<IState> visited = new HashSet<>();
 
-        //swap horizontally
         for(int row = 0; row < landMap.length; row++){
-            for(int col = 0; col < landMap[row].length-1; col++){
-                if(landMap[row][col] != landMap[row][col+1]){
-                    //clone and swap land
-                    LandMap newLandMap = swap(row, col, row, col + 1);
-
-                    evaluateAndAddSuccessor(visited, newLandMap, successors);
-                }
-            }
-        }
-
-        //swap vertically
-        for(int row = 0; row < landMap.length-1; row++){
             for(int col = 0; col < landMap[row].length; col++){
-                if(landMap[row][col]!= landMap[row+1][col]){
-                    //clone and swap land
-                    LandMap newLandMap = swap(row, col, row + 1, col);
-
-                    evaluateAndAddSuccessor(visited, newLandMap, successors);
+                //we evaluate the swap with the neighbour to the right
+                if(col < landMap[row].length - 1 && landMap[row][col] != landMap[row][col+1]){
+                    //we try the swap to evaluate if it is valid
+                    if(trySwap(row, col, row, col + 1)){
+                        //if is valid we clone and add to successors
+                        successors.add(new LandMap(cloneMap(), this.getDepth() + 1));
+                        //we revert the swap to original state
+                        revertSwap(row, col, row, col + 1);
+                    }
+                }
+                if(row < landMap.length - 1 && landMap[row][col] != landMap[row + 1][col]){
+                    //we try the swap to evaluate if it is valid
+                    if(trySwap(row, col, row + 1, col)){
+                        //if is valid we clone and add to successors
+                        successors.add(new LandMap(cloneMap(), this.getDepth() + 1));
+                        //we revert the swap to original state
+                        revertSwap(row, col, row + 1, col);
+                    }
                 }
             }
         }
-
-        //swap diagonally
 
         return successors;
-
     }
 
-    private LandMap swap(int originRow, int originCol, int destinationRow, int destinationCol) {
-        LandMap newLandMap = clone();
-        newLandMap.landMap[originRow][originCol] = newLandMap.landMap[destinationRow][destinationCol];
-        newLandMap.landMap[destinationRow][destinationCol] = landMap[originRow][originCol];
-        return newLandMap;
-    }
+    private boolean trySwap(int row1, int col1, int row2, int col2){
+        //we do the swap
+        int tmp = landMap[row1][col1];
+        landMap[row1][col1] = landMap[row2][col2];
+        landMap[row2][col2] = tmp;
 
-    private void evaluateAndAddSuccessor(Set<IState> visited, LandMap newLandMap, List<IState> successors) {
-        //check if already visited
-        if(visited.contains(newLandMap))
-            return;
+        //we count the borders after the swap
+        int newBorders = countBorders();
 
-        //count borders
-        newLandMap.evaluate();
-
-        if(newLandMap.getObjectiveValue() <= this.getObjectiveValue()){
-            newLandMap.setDepth(this.getDepth() + 1);
-            successors.add(newLandMap);
-            visited.add(newLandMap);
+        if(newBorders>this.borders){
+            revertSwap(row1, col1, row2, col2);
+            return false;
         }
+
+        return true;
     }
 
-    public LandMap clone() {
-        return new LandMap(Arrays.stream(this.landMap)
+    private void revertSwap(int row1, int col1, int row2, int col2) {
+        //we simply revert the swap
+        int tmp = landMap[row1][col1];
+        landMap[row1][col1] = landMap[row2][col2];
+        landMap[row2][col2] = tmp;
+    }
+
+    public int[][] cloneMap() {
+        return Arrays.stream(this.landMap)
                      .map(int[]::clone)
-                     .toArray(int[][]::new));
-    }
-
-    public int[][] getLandMap() {
-        return landMap;
-    }
-
-    public void setLandMap(int[][] landMap) {
-        this.landMap = landMap;
-    }
-
-    public int getBorders() {
-        return borders;
-    }
-
-    public void setBorders(int borders) {
-        this.borders = borders;
+                     .toArray(int[][]::new);
     }
 
     public int getDepth() {
         return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
     }
 
     @Override

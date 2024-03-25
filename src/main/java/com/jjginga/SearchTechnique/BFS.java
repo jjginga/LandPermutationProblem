@@ -44,8 +44,6 @@ public class BFS extends AbstractSearchTechnique {
                     visited.add(successor);
                 }
             }
-
-
         }
 
         //all possible states have been generated

@@ -21,7 +21,7 @@ public class LandProblem {
 
         int i = 0;
         for(Map.Entry<IState, Integer> entry : landMapObjectives.entrySet()){
-            System.out.println(String.format("Instance %d", ++i));
+            System.out.printf("Instance %d%n", ++i);
             SearchTaskManager.executeSearch(entry.getKey(), entry.getValue());
         }
     }
