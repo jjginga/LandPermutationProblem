@@ -1,7 +1,7 @@
-package com.jjginga.SearchTechnique;
+package com.jjginga.searchtechnique;
 
-import com.jjginga.Result.SearchResult;
-import com.jjginga.State.IState;
+import com.jjginga.result.SearchResult;
+import com.jjginga.state.IState;
 
 import java.util.concurrent.Callable;
 

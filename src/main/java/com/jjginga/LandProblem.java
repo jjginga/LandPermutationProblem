@@ -1,13 +1,21 @@
 package com.jjginga;
 
-import com.jjginga.State.IState;
-import com.jjginga.State.LandMap;
+import com.jjginga.state.IState;
+import com.jjginga.state.LandMap;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Defines and solves the land permutation problem with varying initial states and objectives.
+ * Utilizes the SearchTaskManager to execute searches for each problem instance and display the results.
+ */
 public class LandProblem {
 
+    /**
+     * Solves the land permutation problem for predefined instances.
+     * Each instance has a specific initial configuration and a target number of borders to achieve.
+     */
     public void solve(){
         Map<IState, Integer> landMapObjectives = new HashMap<>();
 
